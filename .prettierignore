@@ -1,0 +1,10 @@
+node_modules
+dist
+.env
+.vscode
+.env.local
+coverage
+uploads
+**/node_modules
+**/dist
+**/.turbo

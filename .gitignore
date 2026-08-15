@@ -1,0 +1,15 @@
+node_modules
+dist
+.env
+.env.*
+!.env.example
+!**/.env.example
+*.local
+coverage
+*.log
+frontend/vite.config.js
+frontend/vite.config.d.ts
+backend/uploads/profiles/*
+backend/uploads/resumes/*
+!backend/uploads/profiles/.gitkeep
+!backend/uploads/resumes/.gitkeep
