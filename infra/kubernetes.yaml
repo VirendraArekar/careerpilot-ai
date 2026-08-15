@@ -1,0 +1,35 @@
+apiVersion: v1
+kind: Secret
+metadata: { name: careerpilot-secrets }
+type: Opaque
+stringData:
+  MONGODB_URI: "replace-in-your-secret-manager"
+  JWT_SECRET: "replace-in-your-secret-manager"
+  OPENAI_API_KEY: "replace-in-your-secret-manager"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: { name: careerpilot-api }
+spec:
+  replicas: 2
+  selector: { matchLabels: { app: careerpilot-api } }
+  template:
+    metadata: { labels: { app: careerpilot-api } }
+    spec:
+      containers:
+        - name: api
+          image: your-registry/careerpilot-api:latest
+          ports: [{ containerPort: 5000 }]
+          envFrom: [{ secretRef: { name: careerpilot-secrets } }]
+          readinessProbe: { httpGet: { path: /health, port: 5000 }, initialDelaySeconds: 10, periodSeconds: 10 }
+          livenessProbe: { httpGet: { path: /health, port: 5000 }, initialDelaySeconds: 20, periodSeconds: 20 }
+          resources:
+            requests: { cpu: 150m, memory: 256Mi }
+            limits: { cpu: 750m, memory: 768Mi }
+---
+apiVersion: v1
+kind: Service
+metadata: { name: careerpilot-api }
+spec:
+  selector: { app: careerpilot-api }
+  ports: [{ port: 5000, targetPort: 5000 }]

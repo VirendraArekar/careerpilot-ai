@@ -1,0 +1,43 @@
+services:
+  mongodb:
+    image: mongo:7
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - careerpilot_mongo:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    env_file: ./backend/.env
+    environment:
+      MONGODB_URI: mongodb://mongodb:27017/careerpilot
+      CLIENT_URL: http://localhost:5173
+    ports:
+      - "5000:5000"
+    volumes:
+      - careerpilot_uploads:/app/uploads
+    depends_on:
+      mongodb:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_URL: http://localhost:5000/api
+    restart: unless-stopped
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+
+volumes:
+  careerpilot_mongo:
+  careerpilot_uploads:
