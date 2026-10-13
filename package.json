@@ -14,7 +14,7 @@
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,md,html}\""
   },
   "devDependencies": {
-    "concurrently": "^9.1.2",
+    "concurrently": "^9.2.5",
     "prettier": "^2.8.8"
   },
   "engines": {
