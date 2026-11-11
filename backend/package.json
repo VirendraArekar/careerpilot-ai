@@ -20,7 +20,7 @@
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.2",
     "mammoth": "^1.9.1",
-    "mongoose": "^8.15.1",
+    "mongoose": "^8.24.7",
     "morgan": "^1.10.0",
     "multer": "^2.0.0",
     "openai": "^5.8.2",
